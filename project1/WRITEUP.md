@@ -41,6 +41,7 @@ Note: the stack layout should contain the following contents:
 |         |   | ...                         |
 | Addr_   |   | end buffer (12 bytes)       |
 
+###Task 1.3 Exploiting Explanation (10 points)
 
 # Task 2:
 
