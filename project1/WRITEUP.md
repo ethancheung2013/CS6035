@@ -9,8 +9,8 @@ The initial task was to write a C/C++ program that contains a stack buffer overf
 #include <strings.h>
 
 int main(int argc, char *argv[]){
-	char buffer[12];
-	gets(buffer);
+    char buffer[12];
+    strcpy(buffer,argv[1]);
 };
 ```
 #####Compile Instructions
