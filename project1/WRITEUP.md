@@ -26,15 +26,13 @@ Note: the stack layout should contain the following contents:
 - Content of each part of the stack (5 points)
 - Overflowed area of the stack (5 points)
 
+#####Prior to overflow:
 
-| Addresses    |   | Contents           |
-|---------|---|-----------------------------|
-| Addr    |   | <- argc (4 bytes)           |
-| Addr_4  |   | <- argv (4 bytes)           |
-| Addr_8  |   | <- return address (4 bytes) |
-| Addr_12 |   | start buffer (12 bytes)     |
-|         |   | ...                         |
-| Addr_   |   | end buffer (12 bytes)       |
+![http://imgur.com/a/JoZV8](http://i.imgur.com/BxQlUpF.jpg)
+
+#####After overflow: (to show overflowed area of the stack)
+
+![http://imgur.com/a/JoZV8](http://i.imgur.com/h3S1iXe.jpg)
 
 ###Task 1.3 Exploiting Explanation (10 points)
 
