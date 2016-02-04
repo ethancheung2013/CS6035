@@ -9,7 +9,7 @@ The initial task was to write a C/C++ program that contains a stack buffer overf
 #include <strings.h>
 
 int main(int argc, char *argv[]){
-    char buffer[12];
+    char buffer[8];
     strcpy(buffer,argv[1]);
 };
 ```
@@ -35,6 +35,15 @@ Note: the stack layout should contain the following contents:
 ![http://imgur.com/a/JoZV8](http://i.imgur.com/h3S1iXe.jpg)
 
 ###Task 1.3 Exploiting Explanation (10 points)
+
+To exploit the stack we must first figure out how to cause the program to crash.  It is easy to do this by inputing the following test procedures:
+
+![crashing the program]()
+
+After causing the program to crash, you must then try to find what the proper input to completely overide the return address.  I accomplished this by adding ```0``` onto the tail of my input.  The result from running the program should be something like ```Program received signal SIGSEGV, Segmentation fault. 0x30303030 in ?? ()```.  The reason that we are looking for ```0x30303030``` is the in ```ASCII``` the hex for ```0``` is ```30``` and we are looking for all 4.  The Steps below show how to accomplish this:
+
+![crafting your input]()
+
 
 # Task 2:
 
