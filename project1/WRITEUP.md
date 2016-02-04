@@ -46,7 +46,7 @@ After causing the program to crash, you must then try to find what the proper in
 
 To exploit we want the system to open a shell.  To do this we must develop shell code that will place the code we are trying to execute into the buffer we are overflowing and overwrite the return address so it points back into the buffer.  
 
-To do this we must locate where the ```system``` call resides on our machine.
+To do this we must locate where the ```system``` call resides on our machine.  The following steps were outlined on a Piazza thread [here](https://piazza.com/class/ij905n686w44wb?cid=69)
 
 ```
 (gdb) b main
